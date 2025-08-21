@@ -1,29 +1,53 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import "react-native-reanimated";
 
-import { useColorScheme } from '@/hooks/useColorScheme';
+import { useFonts } from "expo-font";
+import { SplashScreen, Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+
+import { useThemeColor } from "@/hooks/useThemeColor";
+import { ThemeChangerProvider } from "@/presentation/context/ThemeChangerContext";
+
+import "./global.css";
+
+SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
+  const backgroundColor = useThemeColor({}, "background");
+
   const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
   });
 
   if (!loaded) {
-    // Async font loading only occurs in development.
+    SplashScreen.hideAsync();
     return null;
   }
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
+    <GestureHandlerRootView
+      style={{
+        backgroundColor: backgroundColor,
+        flex: 1,
+      }}
+    >
+      <ThemeChangerProvider>
+        <Stack screenOptions={{}}>
+          <Stack.Screen
+            name="index"
+            options={{
+              title: "Theme Changer Skeleton",
+            }}
+          ></Stack.Screen>
+          <Stack.Screen
+            name="themes/index"
+            options={{
+              title: "Theme Changer Skeleton",
+            }}
+          ></Stack.Screen>
+        </Stack>
+      </ThemeChangerProvider>
       <StatusBar style="auto" />
-    </ThemeProvider>
+    </GestureHandlerRootView>
   );
 }
