@@ -1,4 +1,4 @@
-<img alt="Logo de React Native" src="./assets/images/react-logo@3x.png" height=200 width=200 />
+<img alt="Logo de React Native" src="./assets/images/react-logo@3x.png" style="display: block; margin: 0 auto" height=200 width=200 />
 
 # Theme Changer Skeleton
 
