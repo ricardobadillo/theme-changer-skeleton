@@ -1,3 +1,4 @@
+import { useColorScheme } from "nativewind";
 import { View, ViewProps } from "react-native";
 
 interface Props extends ViewProps {
@@ -5,9 +6,14 @@ interface Props extends ViewProps {
 }
 
 export default function ThemedCard({ className, children }: Props) {
+  const { colorScheme } = useColorScheme();
+
   return (
     <View
-      className={`bg-white dark:bg-black/10 p-2 rounded-xl shadow-black/5 ${className}`}
+      className={`bg-primary p-2 rounded-xl shadow-black/5 ${className}`}
+      // style={{
+      //   backgroundColor: themes[colorScheme!]["--background"],
+      // }}
     >
       {children}
     </View>

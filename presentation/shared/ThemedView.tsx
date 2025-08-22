@@ -1,7 +1,8 @@
 import { View, ViewProps } from "react-native";
-
-import { useThemeColor } from "@/hooks/useThemeColor";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+
+import { useColorScheme } from "nativewind";
+import { themes } from "../utils/color-theme";
 
 interface Props extends ViewProps {
   bgColor?: string;
@@ -18,7 +19,9 @@ export default function ThemedView({
   safe = false,
   style,
 }: Props) {
-  const backgroundTheme = useThemeColor({}, "background");
+  const { colorScheme } = useColorScheme();
+  const backgroundTheme = themes[colorScheme ?? "dark"]["--color-overlay"];
+
   const backgroundColor = bgColor ?? backgroundTheme;
   const safeArea = useSafeAreaInsets();
 

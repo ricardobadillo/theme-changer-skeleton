@@ -5,15 +5,17 @@ import { useFonts } from "expo-font";
 import { SplashScreen, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 
-import { useThemeColor } from "@/hooks/useThemeColor";
+import { useColorScheme } from "nativewind";
+
 import { ThemeChangerProvider } from "@/presentation/context/ThemeChangerContext";
 
+import { themes } from "@/presentation/utils/color-theme";
 import "./global.css";
 
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const backgroundColor = useThemeColor({}, "background");
+  const { colorScheme } = useColorScheme();
 
   const [loaded] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
@@ -27,7 +29,7 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView
       style={{
-        backgroundColor: backgroundColor,
+        backgroundColor: themes[colorScheme ?? "dark"]["--background"],
         flex: 1,
       }}
     >
