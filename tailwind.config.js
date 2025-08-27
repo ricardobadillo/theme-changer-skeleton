@@ -1,7 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    "./App.{js,jsx,ts,tsx}",
     "./app/**/*.{js,jsx,ts,tsx}",
     "./presentation/**/*.{js,jsx,ts,tsx}",
   ],
@@ -9,12 +8,27 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "var(--primary)",
-        secondary: "var(--secondary)",
-        tertiary: "var(--tertiary)",
-        success: "var(--success)",
-        text: "var(--text)",
-        background: "var(--background)",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        font: "hsl(var(--font-primary))",
+        fontButton: "hsl(var(--color-primary-button))",
+        input: "hsl(var(--input))",
+        primary: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
+        },
+        secondary: {
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
+        },
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
+        },
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
+        },
       },
     },
   },

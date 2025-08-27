@@ -5,8 +5,12 @@ import ThemedView from "@/presentation/shared/ThemedView";
 
 export default function HomeScreen() {
   return (
-    <ThemedView className="p-8">
-      <ThemedButton className="mt-8" onPress={() => router.push("/themes")}>
+    <ThemedView className="flex flex-1 items-center justify-center">
+      <ThemedButton
+        className="px-4 py-2 rounded-xl"
+        textClassName="text-xl"
+        onPress={() => router.navigate("/example")}
+      >
         Cambiar de tema
       </ThemedButton>
     </ThemedView>

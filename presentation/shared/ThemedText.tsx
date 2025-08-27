@@ -10,16 +10,14 @@ interface Props extends TextProps {
 export default function ThemedText({ className, type, ...rest }: Props) {
   return (
     <Text
-      className={
-        [
-          type === "h1" ? "text-3xl" : undefined,
-          type === "h2" ? "text-xl" : undefined,
-          type === "normal" ? "font-normal" : undefined,
-          type === "semi-bold" ? "font-semibold" : undefined,
-          type === "link" ? "font-normal underline" : undefined,
-          className,
-        ].join(" ") + "text-black dark:text-white"
-      }
+      className={[
+        type === "h1" ? "text-3xl" : undefined,
+        type === "h2" ? "text-xl" : undefined,
+        type === "normal" ? "font-normal" : undefined,
+        type === "semi-bold" ? "font-semibold" : undefined,
+        type === "link" ? "font-normal underline" : undefined,
+        className,
+      ].join(" ")}
       {...rest}
     />
   );

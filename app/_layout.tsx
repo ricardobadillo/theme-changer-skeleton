@@ -3,22 +3,18 @@ import "react-native-reanimated";
 
 import { useFonts } from "expo-font";
 import { SplashScreen, Stack } from "expo-router";
-import { StatusBar } from "expo-status-bar";
 
-import { useColorScheme } from "nativewind";
+import { ContainerTheme } from "@/presentation/themes/provider";
 
-import { ThemeChangerProvider } from "@/presentation/context/ThemeChangerContext";
-
-import { themes } from "@/presentation/utils/color-theme";
 import "./global.css";
 
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const { colorScheme } = useColorScheme();
-
   const [loaded] = useFonts({
-    SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
+    KanitThin: require("../assets/fonts/Kanit-Thin.ttf"),
+    KanitRegular: require("../assets/fonts/Kanit-Regular.ttf"),
+    KanitBold: require("../assets/fonts/Kanit-Bold.ttf"),
   });
 
   if (!loaded) {
@@ -29,27 +25,32 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView
       style={{
-        backgroundColor: themes[colorScheme ?? "dark"]["--background"],
+        backgroundColor: "transparent",
         flex: 1,
       }}
     >
-      <ThemeChangerProvider>
-        <Stack screenOptions={{}}>
+      <ContainerTheme>
+        <Stack
+          screenOptions={{
+            contentStyle: { backgroundColor: "transparent" },
+            headerShown: false,
+          }}
+        >
           <Stack.Screen
-            name="index"
+            name="home/index"
             options={{
               title: "Theme Changer Skeleton",
             }}
           ></Stack.Screen>
+
           <Stack.Screen
-            name="themes/index"
+            name="example/index"
             options={{
               title: "Theme Changer Skeleton",
             }}
           ></Stack.Screen>
         </Stack>
-      </ThemeChangerProvider>
-      <StatusBar style="auto" />
+      </ContainerTheme>
     </GestureHandlerRootView>
   );
 }
