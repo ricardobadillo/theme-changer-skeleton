@@ -1,10 +1,9 @@
 import { router } from "expo-router";
 
-import { useTheme } from "@/presentation/themes/context";
-
 import ThemedButton from "@/presentation/shared/ThemedButton";
 import ThemedText from "@/presentation/shared/ThemedText";
 import ThemedView from "@/presentation/shared/ThemedView";
+import { useTheme } from "@/presentation/themes/context";
 
 export default function ThemesScreen() {
   const { theme, handleThemeSwitch, systemEnabled } = useTheme();
@@ -33,7 +32,11 @@ export default function ThemesScreen() {
       <ThemedView className="flex flex-row gap-x-2">
         <ThemedButton
           onPress={() => handleThemeSwitch("system")}
-          className={`border-input duration-300 p-2 rounded-xl transition-colors ${systemEnabled ? "bg-primary" : ""}`}
+          className={`
+            border-input duration-300 p-2 rounded-xl transition-colors
+            ${systemEnabled ? "bg-primary" : ""}
+          `}
+          disabled={theme === "system"}
           textClassName="text-xl"
         >
           System
@@ -41,7 +44,12 @@ export default function ThemesScreen() {
 
         <ThemedButton
           onPress={() => handleThemeSwitch("light")}
-          className={`border-input duration-300 p-2 rounded-xl transition-colors ${theme === "light" && !systemEnabled ? "bg-primary" : ""}`}
+          className={`
+            border-input duration-300 p-2 rounded-xl transition-colors
+            disabled:bg-gray-400 disabled:text-white
+            ${theme === "light" && !systemEnabled ? "bg-primary" : ""}
+          `}
+          disabled={theme === "light"}
           textClassName="text-xl"
         >
           Light
@@ -49,7 +57,12 @@ export default function ThemesScreen() {
 
         <ThemedButton
           onPress={() => handleThemeSwitch("dark")}
-          className={`border-input duration-300 p-2 rounded-xl transition-colors ${theme === "dark" && !systemEnabled ? "bg-primary" : ""}`}
+          className={`
+            border-input duration-300 p-2 rounded-xl transition-colors
+            disabled:bg-gray-400 disabled:text-white
+            ${theme === "dark" && !systemEnabled ? "bg-primary" : ""}
+          `}
+          disabled={theme === "dark"}
           textClassName="text-xl"
         >
           Dark
@@ -57,7 +70,12 @@ export default function ThemesScreen() {
 
         <ThemedButton
           onPress={() => handleThemeSwitch("deep-ocean")}
-          className={`border-input duration-300 p-2 rounded-xl transition-colors ${theme === "deep-ocean" && !systemEnabled ? "bg-primary" : ""}`}
+          className={`
+            border-input duration-300 p-2 rounded-xl transition-colors
+            disabled:bg-gray-400 disabled:text-white
+            ${theme === "deep-ocean" && !systemEnabled ? "bg-primary" : ""}
+          `}
+          disabled={theme === "deep-ocean"}
           textClassName="text-xl"
         >
           Deep Ocean

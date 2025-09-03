@@ -5,7 +5,7 @@ import { Appearance, View, ViewProps } from "react-native";
 
 import { StatusBar } from "expo-status-bar";
 
-import { ThemesVariants, themes, themesVariables } from ".";
+import { themes, themesVariables, ThemesVariants } from ".";
 import { SystemThemesVariants, ThemeContext, ThemesVariables } from "./context";
 
 type ThemeProps = ViewProps;
@@ -19,42 +19,39 @@ const ThemeProvider = ({ children, className, ...props }: ThemeProps) => {
   const [systemTheme, setSystemTheme] =
     useState<SystemThemesVariants>(userPreferedTheme);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(
-    useCallback(() => {
-      (async () => {
-        const storedTheme = await AsyncStorage.getItem("app-theme");
+  useEffect(() => {
+    (async () => {
+      const storedTheme = await AsyncStorage.getItem("app-theme");
 
-        if (storedTheme !== null && storedTheme !== "system") {
-          setTheme(storedTheme as ThemesVariants);
-          setSystemEnabled(false);
-        } else {
-          if (storedTheme === "system" || storedTheme === null) {
-            try {
-              await AsyncStorage.setItem("app-theme", "system");
-              setTheme(userPreferedTheme);
-              setSystemEnabled(true);
-            } catch (e) {
-              console.error("Error:", e);
-            }
-          } else {
-            setSystemEnabled(false);
-          }
+      if (storedTheme !== null && storedTheme !== "system") {
+        setTheme(storedTheme as ThemesVariants);
+        setSystemEnabled(false);
+      }
+
+      if (storedTheme === null || storedTheme === "system") {
+        try {
+          await AsyncStorage.setItem("app-theme", "system");
+
+          setTheme(userPreferedTheme);
+          setSystemEnabled(true);
+        } catch (e) {
+          console.error("Error:", e);
         }
-      })();
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []),
-    []
-  );
+      } else {
+        setSystemEnabled(false);
+      }
+    })();
+  }, [userPreferedTheme]);
 
   const contextValue = useMemo(
-    () => ({ theme, systemEnabled, systemTheme }),
-    [theme, systemEnabled, systemTheme]
+    () => ({ systemEnabled, systemTheme, theme }),
+    [systemEnabled, systemTheme, theme]
   );
 
   Appearance.addChangeListener((listener) => {
     (async () => {
       const storedTheme = await AsyncStorage.getItem("app-theme");
+
       if (storedTheme !== null && storedTheme !== "system") return;
 
       if (systemEnabled && storedTheme === "system") {
@@ -68,8 +65,7 @@ const ThemeProvider = ({ children, className, ...props }: ThemeProps) => {
       const selectedTheme = theme === "system" ? systemTheme : theme;
       return `hsl(${(themesVariables[selectedTheme!] as Record<string, string>)[`--${colorKey}`]})`;
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [theme]
+    [systemTheme, theme]
   );
 
   const handleThemeSwitch = useCallback(
@@ -80,10 +76,12 @@ const ThemeProvider = ({ children, className, ...props }: ThemeProps) => {
         setSystemTheme(
           Appearance.getColorScheme() === "light" ? "light" : "dark"
         );
+
         await AsyncStorage.setItem("app-theme", "system");
       } else {
         setSystemEnabled(false);
         setTheme(newTheme);
+
         await AsyncStorage.setItem("app-theme", newTheme);
       }
     },
@@ -92,14 +90,11 @@ const ThemeProvider = ({ children, className, ...props }: ThemeProps) => {
 
   return theme ? (
     <View
-      style={themes[theme as "dark" | "light" | "deep-ocean"]}
       className="flex-1"
+      style={themes[theme as "dark" | "light" | "deep-ocean"]}
       {...props}
     >
-      <StatusBar
-        backgroundColor={getThemeColorByVariable("background")}
-        style={theme === "light" ? "dark" : "light"}
-      />
+      <StatusBar style={theme === "light" ? "dark" : "light"} />
       <ThemeContext.Provider
         value={{
           systemEnabled: contextValue.systemEnabled,
